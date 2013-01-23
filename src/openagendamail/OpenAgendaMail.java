@@ -15,6 +15,7 @@ import openagendamail.file.LogFile;
  * 
  * @author adam
  * @date Jan 1, 2012
+ * Last Updated Jan 22, 2013
  */
 public class OpenAgendaMail {
 
@@ -25,7 +26,7 @@ public class OpenAgendaMail {
     private static final String VERSION = "v1.2";
     
     /** The date of the last update to the system. */
-    private static final String LAST_UPDATED = "January 6th, 2013";
+    private static final String LAST_UPDATED = "January 22nd, 2013";
     
     
     /**
@@ -162,7 +163,7 @@ public class OpenAgendaMail {
         System.out.println("      'java -jar AgendaMail.jar week-based' but without quotes.\n\n");
         
         System.out.println("   To run in 1st and 3rd Sunday mode, at the command prompt type:");
-        System.out.println("      'java -jar AgendaMail.jar 1stAnd3rd' but without quotes.\n\n");
+        System.out.println("      'java -jar AgendaMail.jar 1stand3rd' but without quotes.\n\n");
         
         System.out.println("   To show this help type:");
         System.out.println("      'java -jar AgendaMail.jar -h' but without quotes.\n");
