@@ -68,7 +68,7 @@ public class FirstAndThirdRunnable implements Runnable {
             sunday.set(Calendar.DATE, sunday.get(Calendar.DATE) + 1);            
         }
         
-        long secondsUntilFriday = AgendaMailTools.getSecondsUntilSpecifiedDay(Calendar.FRIDAY);
+        long secondsUntilFriday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(Calendar.FRIDAY);
         if (isFirstOrThirdSunday(sunday.get(Calendar.DATE))){
             LogFile.getLogFile().log("This week's Sunday (" + sunday.get(Calendar.MONTH) + " " + 
                     sunday.get(Calendar.DATE) + ", " + sunday.get(Calendar.YEAR) + ") _IS_ a first or third Sunday.");
@@ -80,7 +80,7 @@ public class FirstAndThirdRunnable implements Runnable {
             
             // Schedule sending the agenda for four hours after the agenda is built.
             ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-            sendExecutor.schedule(new SendAgendaRunnable(m_props), secondsUntilFriday + AgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
+            sendExecutor.schedule(new SendAgendaRunnable(m_props), secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
             
         } else {
             // Schedule the agenda building but dont delete agenda items.
@@ -89,7 +89,7 @@ public class FirstAndThirdRunnable implements Runnable {
             
             // Schedule an agenda to be sent out on the off-week.
             ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-            sendExecutor.schedule(new SendAgendaRunnable(m_props, "Off-Week Agenda Preview"), secondsUntilFriday + AgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
+            sendExecutor.schedule(new SendAgendaRunnable(m_props, "Off-Week Agenda Preview"), secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
             
             LogFile.getLogFile().log("This week's Sunday (" + sunday.get(Calendar.MONTH) + " " + 
                     sunday.get(Calendar.DATE) + ", " + sunday.get(Calendar.YEAR) + ") is _NOT_ a first or third Sunday.");   
