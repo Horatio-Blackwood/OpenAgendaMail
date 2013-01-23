@@ -92,8 +92,8 @@ public class OpenAgendaMail {
     
     /** Starts the application in week-based mode. */
     private static void executeWeekBasedMode(){
-        long frequencyInSeconds = Integer.valueOf(m_props.getProperty("weeks.between.meetings", "1")) * AgendaMailTools.ONE_WEEK_IN_SECONDS;        
-        long secondsUntilFriday = AgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
+        long frequencyInSeconds = Integer.valueOf(m_props.getProperty("weeks.between.meetings", "1")) * OpenAgendaMailTools.ONE_WEEK_IN_SECONDS;        
+        long secondsUntilFriday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
 
         // Build the agenda.
         BuildAgendaRunnable builder = new BuildAgendaRunnable(m_props, true);
@@ -110,20 +110,20 @@ public class OpenAgendaMail {
         if (m_props.getProperty("debug", "false").equals("true")){
             sendExecutor.scheduleWithFixedDelay(sender, 10, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
-            sendExecutor.scheduleWithFixedDelay(sender, secondsUntilFriday + AgendaMailTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
+            sendExecutor.scheduleWithFixedDelay(sender, secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
         }
     }
     
     /** Starts the scheduling for meetings that are on the 1st and 3rd of a given day of the week within a month. */
     private static void executeFirstAndThirdMode(){
-        long secondsUntilThursday = AgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
+        long secondsUntilThursday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
 
         FirstAndThirdRunnable firstAndThird = new FirstAndThirdRunnable(m_props);
         ScheduledExecutorService checkerExecutor = Executors.newSingleThreadScheduledExecutor();
         if (m_props.getProperty("debug", "false").equals("true")){
             checkerExecutor.scheduleWithFixedDelay(firstAndThird, 10, secondsUntilThursday, TimeUnit.SECONDS);
         } else {
-            checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilThursday, AgendaMailTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
+            checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilThursday, OpenAgendaMailTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
         } 
     }
     
