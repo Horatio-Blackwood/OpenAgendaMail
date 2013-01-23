@@ -33,6 +33,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
  * 
  * @author adam
  * @date Dec 30, 2012
+ * Last updated:  Jan 22, 2013
  */
 public class BuildAgendaRunnable implements Runnable {
     
@@ -40,16 +41,16 @@ public class BuildAgendaRunnable implements Runnable {
     private static final String PLAIN_TEXT = "TEXT/PLAIN";
 
     /** Application Properties. */
-    private Properties m_props;
+    private static Properties m_props;
     
     /** True if the emails should be deleted after generating the agenda document. */
-    private boolean m_deleteEmails;
+    private static boolean m_deleteEmails;
     
     /** The messages from the email account. */
-    private Message[] m_messages;
+    private static Message[] m_messages;
     
     /** A formatter for date objects used when generating the .doc object. */
-    private SimpleDateFormat m_dateFormat;
+    private static SimpleDateFormat m_dateFormat;
     
     /**
      * Constructor.  Creates a new CheckMailRunnable.
@@ -96,9 +97,17 @@ public class BuildAgendaRunnable implements Runnable {
             LogFile.getLogFile().log("Message exception while initializing store", ex);
         }
         
-            
         // Using the messages retrieved, build the word doc.
         LogFile.getLogFile().log("Generating Agenda Word document.");
+        generateAgendaDocx(store);
+    }
+    
+    
+    /**
+     * Generates the agenda document as a .docx file and writes it out to file.
+     * @param store the message store that contains the email messages.
+     */
+    private static void generateAgendaDocx(Store store){
         try {
             XWPFDocument document = new XWPFDocument();
             XWPFParagraph p1 = document.createParagraph();
@@ -189,7 +198,6 @@ public class BuildAgendaRunnable implements Runnable {
                 }                
             }
             LogFile.getLogFile().log("Document generated.");
-
             
             LogFile.getLogFile().log("Writing word doc to file...");
             OutputStream out = new FileOutputStream(m_props.getProperty("doc.name", "agenda.docx"));
@@ -198,14 +206,12 @@ public class BuildAgendaRunnable implements Runnable {
             out.close();
             LogFile.getLogFile().log("Document successfully written to file.");
             
-            
             // DELETE MESSAGES
             if (m_deleteEmails){
                 for (Message msg : m_messages){
                     msg.setFlag(Flags.Flag.DELETED, true);
                 }                
             }
-            
             
             // Close the store if it was initialized.
             if (store != null){
