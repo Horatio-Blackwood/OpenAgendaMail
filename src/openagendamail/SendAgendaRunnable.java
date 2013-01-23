@@ -2,7 +2,6 @@ package openagendamail;
 
 import com.sun.mail.imap.IMAPStore;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,9 +32,6 @@ public class SendAgendaRunnable implements Runnable {
     
     /** The subject for the email. */
     private String m_emailSubject;
-    
-    /** A formatter for date objects used when generating the .doc object. */
-    private SimpleDateFormat m_dateFormat;
     
     /**
      * Constructor.
@@ -71,8 +67,6 @@ public class SendAgendaRunnable implements Runnable {
         m_props.put("mail.transport.protocol", "smtp");
         m_props.put("mail.smtp.user", m_props.get("email"));
         m_props.put("mail.smtp.password", m_props.get("password"));
-        
-        m_dateFormat = new SimpleDateFormat("MMM.DD.YYY");
     }
     
     /**
