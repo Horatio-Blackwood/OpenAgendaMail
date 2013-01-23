@@ -8,9 +8,8 @@ import java.util.GregorianCalendar;
  * Toolbox class for AgendaMail.
  * 
  * @author adam
- * @date Jan 2, 2012
- * 
- * Last Updated:  Jan 5, 2013
+ * @date Jan 2, 2013
+ * Last Updated:  Jan 22, 2013
  */
 class OpenAgendaMailTools {
     
