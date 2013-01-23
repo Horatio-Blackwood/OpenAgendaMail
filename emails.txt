@@ -1,0 +1,8 @@
+# Email #1
+email_1@gmail.com
+
+# Email #2
+a_second_email@hotmail.com
+
+# empty lines are ignored
+# so are comments

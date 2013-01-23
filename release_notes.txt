@@ -1,0 +1,34 @@
+========================================================================================================================
+v1.2
+Jan 18th, 2013
+
+1 - BUG FIXED - Argument Verification no longer requires upper case A in 1stAnd3rd, since the system does not rely on 
+                it being upper case anywhere else.
+
+2 - CHANGE    - Removed unused agenda.docx and template.docx files.
+
+3 - CHANGE    - Now the Day the agenda is sent out is configurable via properties file.
+
+========================================================================================================================
+v1.1
+Jan 6th, 2013
+
+1 - BUG FIXED - When an empty blank line is included in the email list an exception was thrown when sending emails.  
+                Now these lines are ignored.
+
+2 - BUG FIXED - When the application was started on the day of the week it is intended to send an email, the application
+                would immediately try to send an email rather than calculate the time to wait until the next week.
+
+3 - FEATURE   - Comments are now permitted in the email file.  If a line starts with the hashtag character (#) it will 
+                be ignored.
+
+4 - BUG FIXED - No longer prints 'null' when a user name has not been set for an email account, instead it just lists
+                the email address.
+
+5 - CHANGE    - '1st&3rd' flag changed to '1stAnd3rd'
+
+6 - CHANGE    - Changed to send weekly emails when running in 1stAnd3rd mode as reminders, but does not delete the 
+                agenda items until it builds the actual agenda for the meeting.
+
+7 - CHANGE    - Agenda Items are now ordered by sender.
+========================================================================================================================
