@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
  * 
  * Last Updated:  Jan 5, 2013
  */
-class AgendaMailTools {
+class OpenAgendaMailTools {
     
     /** The number of seconds in four hours. */
     static final long SECONDS_IN_FOUR_HOURS = 60 * 60 * 4;
@@ -21,7 +21,7 @@ class AgendaMailTools {
     static final long ONE_WEEK_IN_SECONDS = 60L * 60 * 24 * 7;
 
     // Private Constructor.
-    private AgendaMailTools(){
+    private OpenAgendaMailTools(){
     }
     
     /**
