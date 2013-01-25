@@ -23,7 +23,7 @@ public class OpenAgendaMail {
     private static Properties m_props;
     
     /** A version string. */
-    static final String VERSION = "v1.2";
+    static final String VERSION = "v1.3";
     
     /** The date of the last update to the system. */
     private static final String LAST_UPDATED = "January 22nd, 2013";
