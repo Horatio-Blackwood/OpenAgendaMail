@@ -15,7 +15,7 @@ import openagendamail.file.LogFile;
  * 
  * @author adam
  * @date Jan 1, 2012
- * Last Updated Jan 22, 2013
+ * Last Updated Jan 25, 2013
  */
 public class OpenAgendaMail {
 
@@ -23,7 +23,7 @@ public class OpenAgendaMail {
     private static Properties m_props;
     
     /** A version string. */
-    private static final String VERSION = "v1.2";
+    static final String VERSION = "v1.2";
     
     /** The date of the last update to the system. */
     private static final String LAST_UPDATED = "January 22nd, 2013";
@@ -109,7 +109,7 @@ public class OpenAgendaMail {
         SendAgendaRunnable sender = new SendAgendaRunnable(m_props);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
         if (m_props.getProperty("debug", "false").equals("true")){
-            sendExecutor.scheduleWithFixedDelay(sender, 10, frequencyInSeconds, TimeUnit.SECONDS);
+            sendExecutor.scheduleWithFixedDelay(sender, 15, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             sendExecutor.scheduleWithFixedDelay(sender, secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
         }
