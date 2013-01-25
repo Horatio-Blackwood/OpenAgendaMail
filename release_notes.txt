@@ -1,4 +1,14 @@
 ========================================================================================================================
+v1.3
+Jan 24th, 2013
+
+1 - CHANGE      - Refactored some of the email generation files for better organization and documentation.
+
+2 - CHANGE      - Performed a survey of required dependencies and got rid of unnecessary .jar files.
+
+3 - CHANGE      - Put this dang ol' repo on github finally!
+
+========================================================================================================================
 v1.2
 Jan 18th, 2013
 
