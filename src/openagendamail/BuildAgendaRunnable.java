@@ -100,9 +100,17 @@ public class BuildAgendaRunnable implements Runnable {
         LogFile.getLogFile().log("Generating Agenda Word document.");
         generateAgendaDocx(store);
         
-        
+        // DELETE MESSAGES
+        deleteEmails(store);
+
+    }
+    
+    /**
+     * Deletes the emails in the account and closes the message store.
+     * @param store the message store to close.
+     */
+    private static void deleteEmails(Store store){
         try {
-            // DELETE MESSAGES
             if (m_deleteEmails){
                 for (Message msg : m_messages){
                     msg.setFlag(Flags.Flag.DELETED, true);
@@ -230,8 +238,6 @@ public class BuildAgendaRunnable implements Runnable {
 
         } catch (IOException ioex) {
             LogFile.getLogFile().log("Error writing word document.", ioex);
-        } catch (Throwable t){
-            t.printStackTrace();
         }
         
         LogFile.getLogFile().log("Exiting agenda generation method.");
