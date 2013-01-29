@@ -3,7 +3,6 @@ package openagendamail;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,8 +13,8 @@ import openagendamail.file.LogFile;
  * The main class for AgendaMail.
  * 
  * @author adam
- * @date Jan 1, 2012
- * Last Updated Jan 25, 2013
+ * @date Jan 1, 2013
+ * Last Updated Jan 28, 2013
  */
 public class OpenAgendaMail {
 
@@ -23,10 +22,10 @@ public class OpenAgendaMail {
     private static Properties m_props;
     
     /** A version string. */
-    static final String VERSION = "v1.3";
+    static final String VERSION = "v1.5";
     
     /** The date of the last update to the system. */
-    private static final String LAST_UPDATED = "January 22nd, 2013";
+    private static final String LAST_UPDATED = "January 28th, 2013";
     
     
     /**
@@ -94,7 +93,7 @@ public class OpenAgendaMail {
     /** Starts the application in week-based mode. */
     private static void executeWeekBasedMode(){
         long frequencyInSeconds = Integer.valueOf(m_props.getProperty("weeks.between.meetings", "1")) * OpenAgendaMailTools.ONE_WEEK_IN_SECONDS;        
-        long secondsUntilFriday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
+        long secondsUntilFriday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("send.day", "tue")));
 
         // Build the agenda.
         BuildAgendaRunnable builder = new BuildAgendaRunnable(m_props, true);
@@ -117,7 +116,7 @@ public class OpenAgendaMail {
     
     /** Starts the scheduling for meetings that are on the 1st and 3rd of a given day of the week within a month. */
     private static void executeFirstAndThirdMode(){
-        long secondsUntilThursday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(getDayOfWeek(m_props.getProperty("send.day", "tue")));
+        long secondsUntilThursday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("send.day", "tue")));
 
         FirstAndThirdRunnable firstAndThird = new FirstAndThirdRunnable(m_props);
         ScheduledExecutorService checkerExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -126,32 +125,6 @@ public class OpenAgendaMail {
         } else {
             checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilThursday, OpenAgendaMailTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
         } 
-    }
-    
-    /** 
-     * Gets the {@link Calendar} day of the week constant for the provided 3 character, lower-case day of the 
-     * week string.
-     */
-    private static int getDayOfWeek(String day){
-        switch (day.toLowerCase()) {
-            case "mon":
-                return Calendar.MONDAY;
-            case "tue":
-                return Calendar.TUESDAY;
-            case "wed":
-                return Calendar.WEDNESDAY;
-            case "thu":
-                return Calendar.THURSDAY;
-            case "fri":
-                return Calendar.FRIDAY;
-            case "sat":
-                return Calendar.SATURDAY;
-            case "sun":
-                return Calendar.SUNDAY;
-            default:
-                throw new IllegalStateException("Invalid day of week provided.  Must be mon, tue, wed, thu, fri, "
-                        + "sat or sun.  Value provided was " + day);
-        }
     }
     
     /** Prints out the proper usage of the application to the command prompt. */

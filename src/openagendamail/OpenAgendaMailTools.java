@@ -1,15 +1,20 @@
 package openagendamail;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import openagendamail.file.LogFile;
+import openagendamail.file.TextFileToolbox;
 
 /**
  * Toolbox class for AgendaMail.
  * 
  * @author adam
  * @date Jan 2, 2013
- * Last Updated:  Jan 22, 2013
+ * Last Updated:  Jan 28, 2013
  */
 class OpenAgendaMailTools {
     
@@ -56,5 +61,54 @@ class OpenAgendaMailTools {
         fridayCal.set(Calendar.DATE, nowCal.get(Calendar.DATE));
        
         return (fridayCal.getTimeInMillis() - new Date().getTime()) / 1000L;
+    }
+    
+    
+    /**
+     * Helper method reads and filters emails from email file.
+     * @return a list of emails read in from the email file.
+     */
+    static List<String> readEmails(String filename){
+        List<String> emails = new ArrayList<>();
+        
+        try {
+            List<String> temp = TextFileToolbox.readLinesFromFile(filename);
+            for (String email : temp){
+                email = email.trim();
+                if (!email.startsWith("#") && !email.isEmpty()){
+                    emails.add(email);
+                }
+            }
+        } catch (IOException ex) {
+            LogFile.getLogFile().log("Error reading emails from email file.", ex);
+        }
+        
+        return emails;
+    }
+    
+    /** 
+     * Gets the {@link Calendar} day of the week constant for the provided 3 character, lower-case day of the 
+     * week string.
+     */
+    static int getDayOfWeek(String day){
+        switch (day.toLowerCase()) {
+            case "mon":
+                return Calendar.MONDAY;
+            case "tue":
+                return Calendar.TUESDAY;
+            case "wed":
+                return Calendar.WEDNESDAY;
+            case "thu":
+                return Calendar.THURSDAY;
+            case "fri":
+                return Calendar.FRIDAY;
+            case "sat":
+                return Calendar.SATURDAY;
+            case "sun":
+                return Calendar.SUNDAY;
+            default:
+                throw new IllegalStateException("Invalid day of week provided.  Must be mon, tue, wed, thu, fri, "
+                        + "sat or sun.  Value provided was " + day);
+        }
     }
 }
