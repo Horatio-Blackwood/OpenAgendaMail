@@ -1,5 +1,6 @@
 package openagendamail;
 
+import openagendamail.util.OpenAgendaMailTools;
 import com.sun.mail.imap.IMAPStore;
 import java.io.IOException;
 import java.util.List;

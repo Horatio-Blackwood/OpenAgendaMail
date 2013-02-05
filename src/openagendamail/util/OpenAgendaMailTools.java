@@ -1,4 +1,4 @@
-package openagendamail;
+package openagendamail.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ import openagendamail.file.TextFileToolbox;
  * 
  * @author adam
  * @date Jan 2, 2013
- * Last Updated:  Jan 28, 2013
+ * Last Updated:  Feb 2, 2013
  */
-class OpenAgendaMailTools {
+public class OpenAgendaMailTools {
     
     /** The number of seconds in four hours. */
-    static final long SECONDS_IN_FOUR_HOURS = 60 * 60 * 4;
+    public static final long SECONDS_IN_FOUR_HOURS = 60 * 60 * 4;
     
     /** A day as measured in seconds - pre-calculated for easy use.*/
-    static final long ONE_WEEK_IN_SECONDS = 60L * 60 * 24 * 7;
+    public static final long ONE_WEEK_IN_SECONDS = 60L * 60 * 24 * 7;
 
     // Private Constructor.
     private OpenAgendaMailTools(){
@@ -34,7 +34,7 @@ class OpenAgendaMailTools {
      * @param dayOfWeek the day of the week using the constants in Calendar (for example Calendar.FRIDAY).
      * @return seconds between now and Friday.
      */
-    static long getSecondsUntilSpecifiedDay(int dayOfWeek){
+    public static long getSecondsUntilSpecifiedDay(int dayOfWeek){
         // Calculate time between now and the next specified day of the week. at 12am
         Date now = new Date();
         
@@ -68,7 +68,7 @@ class OpenAgendaMailTools {
      * Helper method reads and filters emails from email file.
      * @return a list of emails read in from the email file.
      */
-    static List<String> readEmails(String filename){
+    public static List<String> readEmails(String filename){
         List<String> emails = new ArrayList<>();
         
         try {
@@ -90,7 +90,7 @@ class OpenAgendaMailTools {
      * Gets the {@link Calendar} day of the week constant for the provided 3 character, lower-case day of the 
      * week string.
      */
-    static int getDayOfWeek(String day){
+    public static int getDayOfWeek(String day){
         switch (day.toLowerCase()) {
             case "mon":
                 return Calendar.MONDAY;

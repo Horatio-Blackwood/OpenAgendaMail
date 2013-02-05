@@ -1,4 +1,4 @@
-package openagendamail;
+package openagendamail.util;
 
 import com.sun.mail.imap.IMAPMessage;
 import java.util.Comparator;
