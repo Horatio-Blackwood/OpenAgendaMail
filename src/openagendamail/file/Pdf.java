@@ -17,6 +17,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
  *
  * @author adam
  * @date Feb 3, 2013
+ * Last Updated:  February 5, 2013.
  */
 public class Pdf {
 
@@ -84,7 +85,7 @@ public class Pdf {
     private List<String> m_tailWordCache = new ArrayList<>();
 
 
-    /** Constructs a new PDF document. */
+    /** Constructs a new, blank PDF document. */
     public Pdf(){
         try {
             // Initialize the Document
@@ -179,7 +180,7 @@ public class Pdf {
      * @param offset the row height offset calculated for this font.
      *
      * @return true if the call resulted in a line being written to the
-     * @throws IOException
+     * @throws IOException if an error occurs rendering the line to the pdf file.
      */
     private boolean renderLine(String line, PDFont font, int fontSize, float offset) throws IOException{
         String toRender = line.trim();

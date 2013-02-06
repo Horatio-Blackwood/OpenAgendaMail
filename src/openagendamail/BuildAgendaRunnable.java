@@ -31,7 +31,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
  * A runnable that build the agenda document from the emails.
  *
  * @author adam
- * @date Dec 30, 2012
+ * Created:       Dec 30, 2012
  * Last updated:  Feb 2, 2013
  */
 public class BuildAgendaRunnable implements Runnable {
