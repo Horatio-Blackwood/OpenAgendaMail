@@ -196,9 +196,8 @@ public class Pdf {
             }
         } else {
             m_contentStream.setFont(font, fontSize);
-            m_contentStream.drawString(toRender);
             m_contentStream.moveTextPositionByAmount(0, offset);
-            System.out.println("Current Y:  " + m_currentY);
+            m_contentStream.drawString(toRender);
             m_currentY = m_currentY + offset;
             checkPage();
             return true;
@@ -232,7 +231,6 @@ public class Pdf {
      */
     private void checkPage(){
         if (m_currentY < TOP_BOTTOM_MARGINS * 2){
-            System.out.println("New Page!  Y:  " + m_currentY + ", Pg Height:  " + m_pgHeight + ", Margin:  " + TOP_BOTTOM_MARGINS);
             newPage();
         }
     }
@@ -273,7 +271,6 @@ public class Pdf {
             m_contentStream = new PDPageContentStream(m_doc, m_currentPage);
             m_contentStream.beginText();
             m_contentStream.moveTextPositionByAmount(m_currentX, m_currentY);
-            System.out.println("CurrY:  " + m_currentY);
 
         } catch (IOException ex) {
             LogFile.getLogFile().log("Error initializing content stream for new page.", ex);
