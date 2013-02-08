@@ -23,7 +23,6 @@ import javax.mail.internet.MimeMultipart;
 import openagendamail.data.AgendaItem;
 import openagendamail.file.LogFile;
 import openagendamail.file.Pdf;
-import openagendamail.util.MessageComparator;
 import openagendamail.util.OpenAgendaMailTools;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 
@@ -32,7 +31,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
  *
  * @author adam
  * Created:       Dec 30, 2012
- * Last updated:  Feb 2, 2013
+ * Last updated:  Feb 8, 2013
  */
 public class BuildAgendaRunnable implements Runnable {
 
@@ -211,6 +210,7 @@ public class BuildAgendaRunnable implements Runnable {
             LogFile.getLogFile().log("Error fetching email body.", ioex);
         }
 
+        Collections.sort(agendaItems);
         return agendaItems;
     }
 
@@ -222,7 +222,6 @@ public class BuildAgendaRunnable implements Runnable {
         List<IMAPMessage> validMessages = new ArrayList<>();
 
         List<Message> allMessages = Arrays.asList(m_messages);
-        Collections.sort(Arrays.asList(m_messages), new MessageComparator());
         List<String> validEmails = OpenAgendaMailTools.readEmails(m_props.getProperty("email.list.filename", "emails.txt"));
 
         // Check each message to determine its sender's authority to add items to the agenda.
@@ -243,6 +242,7 @@ public class BuildAgendaRunnable implements Runnable {
         } catch (MessagingException ex) {
             LogFile.getLogFile().log("Error getting valid messages/agenda items.", ex);
         }
+
         return validMessages;
     }
 }

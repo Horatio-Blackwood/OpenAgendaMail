@@ -1,13 +1,15 @@
 package openagendamail.data;
 
+import java.util.Objects;
+
 /**
  * A class that represents an agenda item.  It is comprised of four strings, the email address, the name of the person
  * who submitted the item, the item's title and its body.
  *
  * @author adam
- * @date Feb 3, 2013.
+ * @date Feb 8, 2013.
  */
-public class AgendaItem {
+public class AgendaItem implements Comparable<AgendaItem> {
 
     /** The email of the user that submitted this AgendaItem. */
     private String m_email;
@@ -78,5 +80,52 @@ public class AgendaItem {
      */
     public String getBody(){
         return m_body;
+    }
+
+    /** {@link inheritDoc} */
+    @Override
+    public int compareTo(AgendaItem otherItem) {
+        // Compare by sender's email.  If the emails are the same, sort by subject line.
+         if (getEmail().equals(otherItem.getEmail())){
+             return getTitle().compareTo(otherItem.getTitle());
+         } else {
+             return getEmail().compareTo(otherItem.getEmail());
+         }
+    }
+
+    /** {@link inheritDoc} */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.m_email);
+        hash = 97 * hash + Objects.hashCode(this.m_user);
+        hash = 97 * hash + Objects.hashCode(this.m_title);
+        hash = 97 * hash + Objects.hashCode(this.m_body);
+        return hash;
+    }
+
+    /** {@link inheritDoc} */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AgendaItem other = (AgendaItem) obj;
+        if (!Objects.equals(this.m_email, other.m_email)) {
+            return false;
+        }
+        if (!Objects.equals(this.m_user, other.m_user)) {
+            return false;
+        }
+        if (!Objects.equals(this.m_title, other.m_title)) {
+            return false;
+        }
+        if (!Objects.equals(this.m_body, other.m_body)) {
+            return false;
+        }
+        return true;
     }
 }
