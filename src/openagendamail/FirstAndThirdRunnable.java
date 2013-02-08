@@ -1,6 +1,5 @@
 package openagendamail;
 
-import openagendamail.util.OpenAgendaMailTools;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -9,12 +8,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import openagendamail.file.LogFile;
+import openagendamail.util.OpenAgendaMailTools;
 
 /**
  * A runnable for figuring out first and third Sunday agendas and scheduling the agenda building and sending.
- * 
+ *
  * @author adam
- * @date Jan 2, 2012
+ * @date Jan 8, 2012
  */
 public class FirstAndThirdRunnable implements Runnable {
 
