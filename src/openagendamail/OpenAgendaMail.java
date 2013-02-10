@@ -109,7 +109,7 @@ public class OpenAgendaMail {
         SendAgendaRunnable sender = new SendAgendaRunnable(m_props);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
         if (m_props.getProperty("debug", "false").equals("true")){
-            sendExecutor.scheduleWithFixedDelay(sender, 15, frequencyInSeconds, TimeUnit.SECONDS);
+            sendExecutor.scheduleWithFixedDelay(sender, 120, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             sendExecutor.scheduleWithFixedDelay(sender, secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
         }
@@ -136,7 +136,7 @@ public class OpenAgendaMail {
         System.out.println("   week-based mode at the command prompt type:");
         System.out.println("      'java -jar AgendaMail.jar week-based' but without quotes.\n\n");
 
-        System.out.println("   To run in 1st and 3rd Sunday mode, at the command prompt type:");
+        System.out.println("   To run in 1st and 3rd week mode, at the command prompt type:");
         System.out.println("      'java -jar AgendaMail.jar 1stand3rd' but without quotes.\n\n");
 
         System.out.println("   To show this help type:");
