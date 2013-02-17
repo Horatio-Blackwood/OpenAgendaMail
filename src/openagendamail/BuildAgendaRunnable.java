@@ -62,7 +62,7 @@ public class BuildAgendaRunnable implements Runnable {
         m_props = properties;
         m_deleteEmails = deleteEmails;
         m_props.put("mail.store.protocol", "imaps");
-        m_dateFormat = new SimpleDateFormat("MMM.DD.YYY");
+        m_dateFormat = new SimpleDateFormat("MMM.dd.YYYY");
     }
 
     /** {@inheritDoc} */
