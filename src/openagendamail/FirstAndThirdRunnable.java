@@ -62,39 +62,49 @@ public class FirstAndThirdRunnable implements Runnable {
     /** {@inheritDoc} */
     @Override
     public void run() {
-        Date now = new Date();
-        Calendar sunday = new GregorianCalendar();
-        sunday.setTime(now);
 
-        while (sunday.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
-            sunday.set(Calendar.DATE, sunday.get(Calendar.DATE) + 1);
+        Date now = new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(now);
+
+        int firstAndThirdDay = OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("first.and.third.day", "thu"));
+
+        while (cal.get(Calendar.DAY_OF_WEEK) != firstAndThirdDay){
+            cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
         }
 
-        long secondsUntilFriday = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(Calendar.FRIDAY);
-        if (isFirstOrThirdSunday(sunday.get(Calendar.DATE))){
-            LogFile.getLogFile().log("This week's Sunday (" + sunday.get(Calendar.MONTH) + " " +
-                    sunday.get(Calendar.DATE) + ", " + sunday.get(Calendar.YEAR) + ") _IS_ a first or third Sunday.");
-
+        long secondUntilSendDay = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("send.day", "fri")));
+        if (isFirstOrThirdSunday(cal.get(Calendar.DATE))){
+            LogFile.getLogFile().log("This week's meeting day (" + cal.get(Calendar.MONTH) + " " +
+                    cal.get(Calendar.DATE) + ", " + cal.get(Calendar.YEAR) + ") _IS_ a first or third week.");
 
             // Schedule the agenda building.
             ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
-            buildExecutor.schedule(new BuildAgendaRunnable(m_props, true), secondsUntilFriday, TimeUnit.SECONDS);
+            buildExecutor.schedule(new BuildAgendaRunnable(m_props, true), secondUntilSendDay, TimeUnit.SECONDS);
 
             // Schedule sending the agenda for four hours after the agenda is built.
+            EmailSenderRunnable sender = OpenAgendaMailTools.buildAgendaEmailSender(m_props, null);
             ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-            sendExecutor.schedule(new SendAgendaRunnable(m_props), secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
+            sendExecutor.schedule(sender, secondUntilSendDay + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
+
+            // if enabled, schedule the reminder email
+            if ((m_props.getProperty("reminders.on", "false")).toLowerCase().equals("true")){
+                long secondsUntilReminder = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("reminder.day", "mon")));
+                EmailSenderRunnable reminder = OpenAgendaMailTools.buildReminderSender(m_props);
+                ScheduledExecutorService reminderExecutor = Executors.newSingleThreadScheduledExecutor();
+                reminderExecutor.schedule(reminder, secondsUntilReminder, TimeUnit.SECONDS);
+            }
 
         } else {
             // Schedule the agenda building but dont delete agenda items.
             ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
-            buildExecutor.schedule(new BuildAgendaRunnable(m_props, false), secondsUntilFriday, TimeUnit.SECONDS);
+            buildExecutor.schedule(new BuildAgendaRunnable(m_props, false), secondUntilSendDay, TimeUnit.SECONDS);
 
             // Schedule an agenda to be sent out on the off-week.
             ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-            sendExecutor.schedule(new SendAgendaRunnable(m_props, "Off-Week Agenda Preview"), secondsUntilFriday + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
+            sendExecutor.schedule(OpenAgendaMailTools.buildAgendaEmailSender(m_props, "Off-Week Agenda Preview"), secondUntilSendDay + OpenAgendaMailTools.SECONDS_IN_FOUR_HOURS, TimeUnit.SECONDS);
 
-            LogFile.getLogFile().log("This week's Sunday (" + sunday.get(Calendar.MONTH) + " " +
-                    sunday.get(Calendar.DATE) + ", " + sunday.get(Calendar.YEAR) + ") is _NOT_ a first or third Sunday.");
+            LogFile.getLogFile().log("This week's send date (" + OpenAgendaMailTools.getFormattedDateString(cal.getTime()) + ") is _NOT_ a first or third of that day time this month.");
         }
     }
 }
