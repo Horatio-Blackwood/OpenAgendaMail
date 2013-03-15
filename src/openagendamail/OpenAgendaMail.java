@@ -15,7 +15,7 @@ import openagendamail.util.OpenAgendaMailTools;
  *
  * @author adam
  * @date Jan 1, 2013
- * Last Updated:  Feb 2, 2013
+ * Last Updated March 15, 2013
  */
 public class OpenAgendaMail {
 
@@ -26,7 +26,7 @@ public class OpenAgendaMail {
     static final String VERSION = "v1.7";
 
     /** The date of the last update to the system. */
-    private static final String LAST_UPDATED = "February 17th, 2013";
+    private static final String LAST_UPDATED = "March 15th, 2013";
 
 
     /**
@@ -37,7 +37,7 @@ public class OpenAgendaMail {
 
         // print out software version info
         StringBuilder bldr = new StringBuilder(System.lineSeparator());
-        bldr.append("AgendaMail:  A program by Adam Anderson");
+        bldr.append("OpenAgendaMail:  A program by Adam Anderson");
         bldr.append(System.lineSeparator());
         bldr.append("Version:  " + VERSION);
         bldr.append(System.lineSeparator());

@@ -15,6 +15,7 @@ import openagendamail.util.OpenAgendaMailTools;
  *
  * @author adam
  * @date Jan 8, 2012
+ * Last Updated March 15, 2013
  */
 public class FirstAndThirdRunnable implements Runnable {
 
@@ -34,12 +35,12 @@ public class FirstAndThirdRunnable implements Runnable {
 
     /**
      * Returns true if the provided date is a first or 3rd Sunday, false otherwise.  Assumes the date supplied IS in
-     * fact a Sunday.  This method provides no error checking on its input.
+     * fact a valid day.  This method provides no error checking on its input.
      *
-     * @param date the date of the next upcoming Sunday.
-     * @return true if first or third Sunday date provided, false otherwise.
+     * @param date the date of the next upcoming day of interest.
+     * @return true if first or third date provided, false otherwise.
      */
-    private boolean isFirstOrThirdSunday(int date){
+    private boolean isFirstOrThirdDay(int date){
         if (date < 1){
             return false;
         }
@@ -74,7 +75,7 @@ public class FirstAndThirdRunnable implements Runnable {
         }
 
         long secondUntilSendDay = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("send.day", "fri")));
-        if (isFirstOrThirdSunday(cal.get(Calendar.DATE))){
+        if (isFirstOrThirdDay(cal.get(Calendar.DATE))){
             LogFile.getLogFile().log("This week's meeting day (" + cal.get(Calendar.MONTH) + " " +
                     cal.get(Calendar.DATE) + ", " + cal.get(Calendar.YEAR) + ") _IS_ a first or third week.");
 
