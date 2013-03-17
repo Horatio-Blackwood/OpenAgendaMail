@@ -76,7 +76,7 @@ public class FirstAndThirdRunnable implements Runnable {
 
         long secondUntilSendDay = OpenAgendaMailTools.getSecondsUntilSpecifiedDay(OpenAgendaMailTools.getDayOfWeek(m_props.getProperty("send.day", "fri")));
         if (isFirstOrThirdDay(cal.get(Calendar.DATE))){
-            LogFile.getLogFile().log("This week's meeting day (" + cal.get(Calendar.MONTH) + " " +
+            LogFile.getLogFile().log("This week's meeting day (" + (cal.get(Calendar.MONTH) + 1) + " " +
                     cal.get(Calendar.DATE) + ", " + cal.get(Calendar.YEAR) + ") _IS_ a first or third week.");
 
             // Schedule the agenda building.
