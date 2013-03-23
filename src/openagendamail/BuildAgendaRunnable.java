@@ -93,11 +93,10 @@ public class BuildAgendaRunnable implements Runnable {
             LogFile.getLogFile().log("Message exception while initializing store", ex);
         }
 
-        // Using the messages retrieved, build the word doc.
+        // Using the messages retrieved, build the agenda .pdf
         LogFile.getLogFile().log("Generating Agenda document.");
-
-        //generateDocxAgenda();
         generatePdfAgenda();
+        LogFile.getLogFile().log("Done creating Agenda document.");
 
         // delete the old messages.
         LogFile.getLogFile().log("Deleting old emails...");
@@ -145,7 +144,9 @@ public class BuildAgendaRunnable implements Runnable {
             pdf.insertBlankLine(PdfFont.HELVETICA, 12);
 
             // Render Agenda Items to PDF.
+            LogFile.getLogFile().log("Assembling AgendaItem objects from emails.");
             List<AgendaItem> items = generateAgendaItems();
+            LogFile.getLogFile().log("Finished assembling AgendaItems.");
 
             if (!items.isEmpty()){
                 // Render Each Agenda Item
@@ -163,6 +164,7 @@ public class BuildAgendaRunnable implements Runnable {
                     // Render the Body if any.
                     if (!(item.getBody() == null && item.getBody().isEmpty())){
                         pdf.renderLine(item.getBody(), PdfFont.HELVETICA, 9);
+                        LogFile.getLogFile().log(item.getBody());
                     }
 
                     // Skip a Line
