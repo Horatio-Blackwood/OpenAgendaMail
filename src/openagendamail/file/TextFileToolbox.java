@@ -2,6 +2,7 @@ package openagendamail.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,13 +57,17 @@ public class TextFileToolbox {
     public static List<String> readLinesFromFile(String filename) throws IOException{
         try {
             BufferedReader inFile = new BufferedReader(new FileReader(filename));
-            List<String> lines = new ArrayList<String>();
+            List<String> lines = new ArrayList<>();
             String line;
             while ((line = inFile.readLine()) != null){
                 lines.add(line);
             }
             inFile.close();
             return lines;
+
+        } catch (FileNotFoundException ex){
+            LogFile.getLogFile().log("Cannot find file:  " + filename + ".  Does file exist?", ex);
+            throw ex;
             
         } catch (IOException ex){
             LogFile.getLogFile().log("Error reading lines from file:  " + filename, ex);
