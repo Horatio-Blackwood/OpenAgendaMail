@@ -91,7 +91,7 @@ public class LogFile {
      * @param message the message to log.
      * @param ex the exception to extract the stack trace from.
      */
-    public void log(String message, Exception ex) {
+    public void log(String message, Throwable ex) {
         try {
             StringBuilder msg = new StringBuilder(new Date().toString());
             msg.append(NEWLINE);

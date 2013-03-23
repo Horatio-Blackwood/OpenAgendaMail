@@ -17,7 +17,7 @@ class StackTraceHandler {
      * A method for compiling and returning a stack trace into a single string.
      * @param ex the exception to grab the stack trace from.
      */
-    static String handleStackTrace(Exception ex){
+    static String handleStackTrace(Throwable ex){
         // add the stack trace message
         StringBuilder builder = new StringBuilder(SPACE);
         builder.append(ex.getMessage());
