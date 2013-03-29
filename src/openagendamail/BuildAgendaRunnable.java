@@ -176,7 +176,6 @@ public class BuildAgendaRunnable implements Runnable {
             try {
                 // Save PDF to disk.
                 pdf.saveAs(m_props.getProperty("doc.name", "agenda.pdf"));
-                pdf.close();
             } catch (COSVisitorException ex) {
                 LogFile.getLogFile().log("Error while saving pdf document.", ex);
             }
