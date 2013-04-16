@@ -95,12 +95,17 @@ public class BuildAgendaRunnable implements Runnable {
         // Using the messages retrieved, build the agenda .pdf
         LogFile.getLogFile().log("Generating Agenda document.");
         generatePdfAgenda();
-        LogFile.getLogFile().log("Done creating Agenda document.");
+        LogFile.getLogFile().log("Done creating Agenda document.");            
+
 
         // delete the old messages.
-        LogFile.getLogFile().log("Deleting old emails...");
-        deleteEmails(store);
-        LogFile.getLogFile().log("Done deleting old emails.");
+        if (m_props.getProperty("debug", "false").equals("true")){
+            LogFile.getLogFile().log("In debug mode:  Skipping email delete step.");
+        } else {
+            LogFile.getLogFile().log("Deleting old emails...");
+            deleteEmails(store);
+            LogFile.getLogFile().log("Done deleting old emails.");            
+        }
     }
 
     /**
