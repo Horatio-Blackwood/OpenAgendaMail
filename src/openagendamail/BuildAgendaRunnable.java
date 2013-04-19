@@ -168,7 +168,6 @@ public class BuildAgendaRunnable implements Runnable {
                     // Render the Body if any.
                     if (!(item.getBody() == null && item.getBody().isEmpty())){
                         pdf.renderLine(item.getBody(), 9);
-                        LogFile.getLogFile().log(item.getBody());
                     }
 
                     // Skip a Line
