@@ -26,11 +26,11 @@ public class OpenAgendaMailTools {
 
     /** A day as measured in seconds - pre-calculated for easy use.*/
     public static final long ONE_WEEK_IN_SECONDS = 60L * 60 * 24 * 7;
-    
-/** A formatter for date objects used when generating the .doc object. */
+
+    /** A formatter for date objects used when generating the .doc object. */
     private static SimpleDateFormat m_dateFormat = new SimpleDateFormat("MMM.dd.YYYY");
 
-    // Private Constructor.
+    /** Private Constructor - this class should never be instantiated. */
     private OpenAgendaMailTools(){
     }
 
@@ -72,7 +72,7 @@ public class OpenAgendaMailTools {
 
     /**
      * Helper method reads and filters emails from email file.
-     * 
+     *
      * @param filename The filename of the email list.
      * @return a list of emails read in from the email file.
      */
@@ -97,10 +97,10 @@ public class OpenAgendaMailTools {
     /**
      * Gets the {@link Calendar} day of the week constant for the provided 3 character, lower-case day of the
      * week string.
-     * 
-     * @param day a string representing the day of the week.  The only valid values are:  'mon', 'tue', 'wed', 'thu', 
+     *
+     * @param day a string representing the day of the week.  The only valid values are:  'mon', 'tue', 'wed', 'thu',
      * 'fri', 'sat' and 'sun'.  If any other value is provided, an IllegalStateException will be thrown.
-     * 
+     *
      * @throws IllegalStateException if an invalid day string is provided.
      */
     public static int getDayOfWeek(String day){
@@ -129,10 +129,10 @@ public class OpenAgendaMailTools {
      * Builds and returns an email sender that sends out the agenda.
      *
      * @param props the properties object for sending the email.
-     * @param subject The subject of the email to be sent.  This parameter can be null.  If it is, a default subject 
-     * will be used:  "This week's [Agenda Title]", or "This week's agenda" if no agenda title is specified in the 
+     * @param subject The subject of the email to be sent.  This parameter can be null.  If it is, a default subject
+     * will be used:  "This week's [Agenda Title]", or "This week's agenda" if no agenda title is specified in the
      * program's properties file.
-     * 
+     *
      * @return an email sender that sends out the agenda.
      */
     public static EmailSenderRunnable buildAgendaEmailSender(Properties props, String subject){
@@ -164,7 +164,7 @@ public class OpenAgendaMailTools {
 
     /**
      * Formats and returns a string that represents the current date in this format:  MMM.dd.YYYY.
-     * 
+     *
      * @param date the {@link java.util.Date} to format.  If a null date is provided the empty String is returned.
      * @return a formatted date string for presentation to a user.
      */

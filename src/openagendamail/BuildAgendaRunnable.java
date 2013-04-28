@@ -155,30 +155,44 @@ public class BuildAgendaRunnable implements Runnable {
             if (!items.isEmpty()){
                 // Render Each Agenda Item
                 for (AgendaItem item : items){
+                    
+                    // TEST LINE
+                    LogFile.getLogFile().log("Rendering Agenda Item:  " + item.getTitle());
+                    
                     // Render the Header Line
+                    LogFile.getLogFile().log("Rendering header.");
                     pdf.renderLine(item.getTitle(), PdfFont.HELVETICA_BOLD, 12);
 
                     // Render From Line
+                    LogFile.getLogFile().log("Rendering from.");
                     String fromLine = "Submitted By:  " + item.getUser() + " (" + item.getEmail() +")";
                     pdf.renderLine(fromLine, 9);
 
                     // Skip a Line
+                    LogFile.getLogFile().log("Inserting blank line.");
                     pdf.insertBlankLine();
 
                     // Render the Body if any.
-                    if (!(item.getBody() == null && item.getBody().isEmpty())){
+                    LogFile.getLogFile().log("Checking body for content.");
+                    if (!(item.getBody() == null || item.getBody().isEmpty())){
+                        LogFile.getLogFile().log("Rendering body.");
                         pdf.renderLine(item.getBody(), 9);
                     }
 
                     // Skip a Line
+                    LogFile.getLogFile().log("Skipping a line.");
                     pdf.insertBlankLine();
                 }
             } else {
                 pdf.renderLine("No items were submitted to the agenda.");
             }
+            
             try {
                 // Save PDF to disk.
+                LogFile.getLogFile().log("Saving file....");
                 pdf.saveAs(m_props.getProperty("doc.name", "agenda.pdf"));
+                LogFile.getLogFile().log("Save complete.");
+                
             } catch (COSVisitorException ex) {
                 LogFile.getLogFile().log("Error while saving pdf document.", ex);
             }
