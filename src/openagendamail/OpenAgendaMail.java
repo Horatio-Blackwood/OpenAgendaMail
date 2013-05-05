@@ -138,7 +138,7 @@ public class OpenAgendaMail {
         // Capabilities.
         EmailSenderRunnable sender = OamTools.buildAgendaEmailSender(null);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-        sendExecutor.schedule(sender, 60L, TimeUnit.MILLISECONDS);
+        sendExecutor.schedule(sender, 60L, TimeUnit.SECONDS);
     }
 
     /** Starts the scheduling for meetings that are on the 1st and 3rd of a given day of the week within a month. */
