@@ -115,7 +115,7 @@ public class EmailSenderRunnable implements Runnable {
         message.setContent(multipart);
 
         // Add Recipients
-        LogFile.getLogFile().log("Adding " + emails.size() + "email recipients...");
+        LogFile.getLogFile().log("Adding " + emails.size() + " email recipients...");
         for (String email : emails){
             message.addRecipient(Message.RecipientType.BCC, new InternetAddress(email));
         }
