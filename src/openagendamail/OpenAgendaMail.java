@@ -13,7 +13,7 @@ import openagendamail.util.OamTools;
  *
  * @author adam
  * @date Jan 1, 2013
- * Last Updated March 15, 2013
+ * Last Updated: May 5th, 2013
  */
 public class OpenAgendaMail {
 
@@ -21,7 +21,7 @@ public class OpenAgendaMail {
     private static Properties m_props = OamTools.PROPS;
 
     /** A version string. */
-    static final String VERSION = "v1.8a";
+    static final String VERSION = "v1.8";
 
     /** The date of the last update to the system. */
     private static final String LAST_UPDATED = "May 5th, 2013";
@@ -49,7 +49,7 @@ public class OpenAgendaMail {
             System.exit(0);
         }
         if (!(args[0].toLowerCase().equals("1stand3rd") || args[0].toLowerCase().equals("week-based") ||
-                args[0].toLowerCase().equals("-h") || args[0].toLowerCase().equals("--help"))) {
+                args[0].toLowerCase().equals("-h") || args[0].toLowerCase().equals("--help") | args[0].toLowerCase().equals("one-shot"))) {
             printUsage();
             System.exit(0);
         }
