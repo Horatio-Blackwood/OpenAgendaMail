@@ -1,4 +1,21 @@
 ========================================================================================================================
+v1.8a
+May 5th, 2013
+
+1 - CHANGE	- Broke the properties files out into three files:  application, schedule and email to make it easier to
+		  locate the configuration item you want to configure.
+
+2 - CHANGE	- Started adding unit tests.
+
+3 - CHANGE	- Re-architected the retrieval of Agenda Items using the AgendaItemProvider interface to better support 
+		  unit testing.
+
+4 - CHANGE	- Moved properties to a public static variable on OpenAgendaMailTools.
+
+5 - FEATURE     - Added 'one-shot' mode which generates and sends an agenda right now and schedules no further agenda
+                  creation/sending.
+
+========================================================================================================================
 v1.7
 Jan 24th, 2013
 

@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * @author adam
  */
 public class AgendaItemTest {
-    
+
     private AgendaItem m_item1;
     private AgendaItem m_item2;
 
@@ -31,7 +31,7 @@ public class AgendaItemTest {
     @Before
     public void setUp() {
         m_item1 = new AgendaItem("email", "user", "title", "body");
-        m_item1 = new AgendaItem("zemail", "zuser", "ztitle", "zbody");
+        m_item2 = new AgendaItem("zemail", "zuser", "ztitle", "zbody");
     }
 
     @After
@@ -42,7 +42,7 @@ public class AgendaItemTest {
     @Test
     public void testGetEmail() {
         System.out.println(" --- getEmail");
-        
+
         String expResult1 = "email";
         String expResult2 = "zemail";
         String result1 = m_item1.getEmail();
@@ -55,11 +55,11 @@ public class AgendaItemTest {
     @Test
     public void testGetUser() {
         System.out.println(" --- getUser");
-        
+
         String expResult1 = "user";
         String expResult2 = "zuser";
-        String result1 = m_item1.getEmail();
-        String result2 = m_item2.getEmail();
+        String result1 = m_item1.getUser();
+        String result2 = m_item2.getUser();
         assertEquals(expResult1, result1);
         assertEquals(expResult2, result2);
     }
@@ -68,11 +68,11 @@ public class AgendaItemTest {
     @Test
     public void testGetTitle() {
         System.out.println(" --- getTitle");
-        
+
         String expResult1 = "title";
         String expResult2 = "ztitle";
-        String result1 = m_item1.getEmail();
-        String result2 = m_item2.getEmail();
+        String result1 = m_item1.getTitle();
+        String result2 = m_item2.getTitle();
         assertEquals(expResult1, result1);
         assertEquals(expResult2, result2);
     }
@@ -80,11 +80,11 @@ public class AgendaItemTest {
     /** Test of getBody method, of class AgendaItem. */
     @Test
     public void testGetBody() {
-        
+
         String expResult1 = "body";
         String expResult2 = "zbody";
-        String result1 = m_item1.getEmail();
-        String result2 = m_item2.getEmail();
+        String result1 = m_item1.getBody();
+        String result2 = m_item2.getBody();
         assertEquals(expResult1, result1);
         assertEquals(expResult2, result2);
     }
@@ -94,15 +94,16 @@ public class AgendaItemTest {
     public void testCompareTo() {
         System.out.println(" --- compareTo");
 
-        assertEquals(-1, m_item1.compareTo(m_item2));
+        assertTrue(0 > m_item1.compareTo(m_item2));
         assertEquals(0, m_item1.compareTo(m_item1));
         assertEquals(0, m_item2.compareTo(m_item2));
-        assertEquals(1, m_item2.compareTo(m_item1));
+        assertTrue(0 < m_item2.compareTo(m_item1));
     }
 
     /** Test of hashCode method, of class AgendaItem. */
     @Test
     public void testHashCode() {
+        System.out.println(" --- hashCode");
         assertEquals(m_item1.hashCode(), m_item1.hashCode());
         assertEquals(m_item2.hashCode(), m_item2.hashCode());
         assertFalse(m_item1.hashCode() == m_item2.hashCode());

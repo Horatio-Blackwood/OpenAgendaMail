@@ -17,7 +17,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import openagendamail.file.LogFile;
-import openagendamail.util.OpenAgendaMailTools;
+import openagendamail.util.OamTools;
 
 /**
  * This class is a general purpose email sender.  It allows you to build and send emails with variable subjects, body
@@ -43,16 +43,12 @@ public class EmailSenderRunnable implements Runnable {
     /**
      * Constructs a new EmailSenderRunnable.
      *
-     * @param properties the properties required to send an email.
      * @param subject the subject of the email to send.
      * @param body the body of the email, if any.  This value may be null.
      * @param attachments a list of Strings that are the paths to files that should be attached.  Null is a permitted
      * value.
      */
-    public EmailSenderRunnable(Properties properties, String subject, String body, List<String> attachments){
-        if (properties == null){
-            throw new IllegalArgumentException("Parameter 'properties' cannot be null.");
-        }
+    public EmailSenderRunnable(String subject, String body, List<String> attachments){
         if (subject == null){
             throw new IllegalArgumentException("Parameter 'subject' cannot be null.");
         }
@@ -64,7 +60,7 @@ public class EmailSenderRunnable implements Runnable {
 
         m_subject = subject;
         m_body = body;
-        m_props = properties;
+        m_props = OamTools.PROPS;
 
         // Add the attachments to the collection if any were provided.
         m_attachments = new ArrayList<>();
@@ -92,7 +88,7 @@ public class EmailSenderRunnable implements Runnable {
      */
     private MimeMessage buildEmail(Session session) throws MessagingException{
         // --- Define message
-        List<String> emails = OpenAgendaMailTools.readEmails(m_props.getProperty("email.list.filename", "emails.txt"));
+        List<String> emails = OamTools.readEmails(m_props.getProperty("email.list.filename", "emails.txt"));
         LogFile.getLogFile().log("Constructing email message....");
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(m_props.getProperty("email")));

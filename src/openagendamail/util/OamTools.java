@@ -1,5 +1,7 @@
 package openagendamail.util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +21,10 @@ import openagendamail.file.TextFileToolbox;
  * @date Jan 2, 2013
  * Last Updated:  Feb 2, 2013
  */
-public class OpenAgendaMailTools {
+public class OamTools {
+
+    /** The properties for this application. */
+    public static final Properties PROPS = new Properties();
 
     /** The number of seconds in four hours. */
     public static final long SECONDS_IN_FOUR_HOURS = 60 * 60 * 4;
@@ -30,8 +35,24 @@ public class OpenAgendaMailTools {
     /** A formatter for date objects used when generating the .doc object. */
     private static SimpleDateFormat m_dateFormat = new SimpleDateFormat("MMM.dd.YYYY");
 
+    // Loads the properties for the application.
+    static {
+        try {
+            FileInputStream app = new FileInputStream("./data/application.properties");
+            FileInputStream email = new FileInputStream("./data/email.properties");
+            FileInputStream schedule = new FileInputStream("./data/schedule.properties");
+            PROPS.load(app);
+            PROPS.load(email);
+            PROPS.load(schedule);
+        } catch (FileNotFoundException ex) {
+            LogFile.getLogFile().log("Properties file not found.", ex);
+        } catch (IOException ioex){
+            LogFile.getLogFile().log("Failed to read in properties.", ioex);
+        }
+    }
+
     /** Private Constructor - this class should never be instantiated. */
-    private OpenAgendaMailTools(){
+    private OamTools(){
     }
 
     /**
@@ -126,6 +147,34 @@ public class OpenAgendaMailTools {
     }
 
     /**
+     * Returns true if the provided date is a first or 3rd Sunday, false otherwise.  Assumes the date supplied IS in
+     * fact a valid day.  This method provides no error checking on its input.
+     *
+     * @param date the date of the next upcoming day of interest.
+     * @return true if first or third date provided, false otherwise.
+     */
+    public static boolean isFirstOrThirdDay(int date){
+        if (date < 1){
+            return false;
+        }
+
+        if (date <= 7){
+            return true;
+        }
+
+        if (date <= 14){
+            return false;
+        }
+
+        if (date <= 21){
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * Builds and returns an email sender that sends out the agenda.
      *
      * @param props the properties object for sending the email.
@@ -135,16 +184,16 @@ public class OpenAgendaMailTools {
      *
      * @return an email sender that sends out the agenda.
      */
-    public static EmailSenderRunnable buildAgendaEmailSender(Properties props, String subject){
+    public static EmailSenderRunnable buildAgendaEmailSender(String subject){
         if (subject == null){
-            subject = "This week's " + props.getProperty("agenda.title", "agenda");
+            subject = "This week's " + PROPS.getProperty("agenda.title", "agenda");
         }
         String body = "Here is this week's agenda.  This is an automated email.  Please to not reply to this message.";
 
         List<String> attachments = new ArrayList<>();
-        attachments.add(props.getProperty("doc.name", "agenda.pdf"));
+        attachments.add(PROPS.getProperty("doc.name", "agenda.pdf"));
 
-        return new EmailSenderRunnable(props, subject, body, attachments);
+        return new EmailSenderRunnable(subject, body, attachments);
     }
 
     /**
@@ -153,13 +202,13 @@ public class OpenAgendaMailTools {
      * @param props the properties object for sending the email.
      * @return an email sender that sends out the agenda.
      */
-    public static EmailSenderRunnable buildReminderSender(Properties props){
+    public static EmailSenderRunnable buildReminderSender(){
         System.out.println("Building reminder sender...");
-        String agendaName = props.getProperty("agenda.title");
-        String subject = props.getProperty("reminder.subject", agendaName + " reminder.");
-        String body = props.getProperty("reminder.body");
+        String agendaName = PROPS.getProperty("agenda.title");
+        String subject = PROPS.getProperty("reminder.subject", agendaName + " reminder.");
+        String body = PROPS.getProperty("reminder.body");
 
-        return new EmailSenderRunnable(props, subject, body, null);
+        return new EmailSenderRunnable(subject, body, null);
     }
 
     /**

@@ -1,15 +1,15 @@
 package openagendamail.file;
 
 /**
- * Handles stack traces.  This will return a string that has a stack trace neatly and cleanly word-wrapped and indented.
+ * This class returns a string that has a stack trace neatly and cleanly word-wrapped and indented.
  * @author adam
  * @date Aug 6, 2011
  */
 class StackTraceHandler {
-    
+
     /** A constant twelve-space indentation String. */
     private static final String SPACE = "      ";
-    
+
     /** A constant that contains a system independent newline character. */
     private static final String NEWLINE = System.getProperty("line.separator");
 
@@ -22,7 +22,7 @@ class StackTraceHandler {
         StringBuilder builder = new StringBuilder(SPACE);
         builder.append(ex.getMessage());
         builder.append(NEWLINE);
-        
+
         // add each line of the stack trace.
         for (StackTraceElement element : ex.getStackTrace()){
             builder.append(SPACE);
