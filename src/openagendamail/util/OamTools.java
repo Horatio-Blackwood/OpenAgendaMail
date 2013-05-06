@@ -13,6 +13,9 @@ import java.util.Properties;
 import openagendamail.EmailSenderRunnable;
 import openagendamail.file.LogFile;
 import openagendamail.file.TextFileToolbox;
+import openagendamail.util.email.Email;
+import openagendamail.util.email.EmailAccount;
+import openagendamail.util.email.RecipientType;
 
 /**
  * Toolbox class for AgendaMail.
@@ -44,6 +47,7 @@ public class OamTools {
             PROPS.load(app);
             PROPS.load(email);
             PROPS.load(schedule);
+
         } catch (FileNotFoundException ex) {
             LogFile.getLogFile().log("Properties file not found.", ex);
         } catch (IOException ioex){
@@ -169,7 +173,6 @@ public class OamTools {
         if (date <= 21){
             return true;
         }
-
         return false;
     }
 
@@ -188,12 +191,15 @@ public class OamTools {
         if (subject == null){
             subject = "This week's " + PROPS.getProperty("agenda.title", "agenda");
         }
-        String body = "Here is this week's agenda.  This is an automated email.  Please to not reply to this message.";
+        EmailAccount account = new EmailAccount(PROPS.getProperty("email"), PROPS.getProperty("password"));
+        Email toSend = new Email(subject, PROPS.getProperty("body"));
+        toSend.addAttachment(PROPS.getProperty("doc.name", "agenda.pdf"));
 
-        List<String> attachments = new ArrayList<>();
-        attachments.add(PROPS.getProperty("doc.name", "agenda.pdf"));
+        for (String email : OamTools.readEmails(PROPS.getProperty("email.list.filename"))){
+            toSend.addRecipient(email, RecipientType.BCC);
+        }
 
-        return new EmailSenderRunnable(subject, body, attachments);
+        return new EmailSenderRunnable(account, toSend);
     }
 
     /**
@@ -203,12 +209,16 @@ public class OamTools {
      * @return an email sender that sends out the agenda.
      */
     public static EmailSenderRunnable buildReminderSender(){
-        System.out.println("Building reminder sender...");
-        String agendaName = PROPS.getProperty("agenda.title");
-        String subject = PROPS.getProperty("reminder.subject", agendaName + " reminder.");
-        String body = PROPS.getProperty("reminder.body");
+        EmailAccount account = new EmailAccount(PROPS.getProperty("email"), PROPS.getProperty("password"));
+        String subject = PROPS.getProperty("reminder.subject", "Agenda Reminder");
+        String body = PROPS.getProperty("reminder.body", "Please remember to send in your agenda items.");
+        Email toSend = new Email(subject, body);
 
-        return new EmailSenderRunnable(subject, body, null);
+        for (String email : OamTools.readEmails(PROPS.getProperty("email.list.filename"))){
+            toSend.addRecipient(email, RecipientType.BCC);
+        }
+
+        return new EmailSenderRunnable(account, toSend);
     }
 
     /**
@@ -223,5 +233,4 @@ public class OamTools {
         }
         return m_dateFormat.format(date);
     }
-
 }

@@ -1,0 +1,36 @@
+Sun May 05 19:55:39 PDT 2013
+      Connecting to email account...
+
+
+Sun May 05 19:55:43 PDT 2013
+      Connected successfully.
+
+
+Sun May 05 19:55:43 PDT 2013
+      Constructing email message....
+
+
+Sun May 05 19:55:44 PDT 2013
+      Adding body text to email...
+
+
+Sun May 05 19:55:44 PDT 2013
+      Attaching attachment files...
+
+
+Sun May 05 19:55:44 PDT 2013
+      Adding 3 email recipients...
+
+
+Sun May 05 19:55:44 PDT 2013
+      Closing Message store.
+
+
+Sun May 05 19:55:44 PDT 2013
+      Sending the message...
+
+
+Sun May 05 19:55:46 PDT 2013
+      Message(s) sent successfully.
+
+

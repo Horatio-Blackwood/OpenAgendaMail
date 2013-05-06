@@ -27,7 +27,7 @@ public class BuildAgendaRunnableTest {
 
     @BeforeClass
     public static void setUpClass() {
-        System.out.println("Testing BuildAgendaRunnable.");
+        System.out.println("BuildAgendaRunnableTest");
     }
 
     @AfterClass
@@ -44,7 +44,7 @@ public class BuildAgendaRunnableTest {
 
     /**
      * Test of run method, of class BuildAgendaRunnable.
-     * 
+     *
      * This test cannot verify the contents of the PDF files, so it simply creates the Agenda documents and verifies
      * that the files are created.  It is up to the individual running the tests to verify the contents of the agendas
      * are created appropriately.

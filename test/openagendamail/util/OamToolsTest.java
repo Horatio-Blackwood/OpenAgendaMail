@@ -24,7 +24,7 @@ public class OamToolsTest {
 
     @BeforeClass
     public static void setUpClass() {
-        System.out.println("Testing OamTools.");
+        System.out.println("OamToolsTest");
     }
 
     @AfterClass

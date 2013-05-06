@@ -21,7 +21,7 @@ public class AgendaItemTest {
 
     @BeforeClass
     public static void setUpClass() {
-        System.out.println("Running tests for AgendaItem");
+        System.out.println("AgendaItemTest");
     }
 
     @AfterClass
