@@ -24,7 +24,7 @@ public class OpenAgendaMail {
     static final String VERSION = "v1.8";
 
     /** The date of the last update to the system. */
-    private static final String LAST_UPDATED = "May 5th, 2013";
+    private static final String LAST_UPDATED = "May 6th, 2013";
 
 
     /**
@@ -51,6 +51,7 @@ public class OpenAgendaMail {
         if (!(args[0].toLowerCase().equals("1stand3rd") || args[0].toLowerCase().equals("week-based") ||
                 args[0].toLowerCase().equals("-h") || args[0].toLowerCase().equals("--help") | args[0].toLowerCase().equals("one-shot"))) {
             printUsage();
+            LogFile.getLogFile().log("Invalid argument provided:  " + args[0]);
             System.exit(0);
         }
 
@@ -85,19 +86,19 @@ public class OpenAgendaMail {
         long frequencyInSeconds = Integer.valueOf(m_props.getProperty("weeks.between.meetings", "1")) * OamTools.ONE_WEEK_IN_SECONDS;
         long secondsUntilAgendaIsDue = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(m_props.getProperty("send.day", "tue")));
 
-        // Build the agenda.
+        // Schedule the agenda building.
         BuildAgendaRunnable builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(true));
         ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
-        if (m_props.getProperty("debug", "false").equals("true")){
+        if (m_props.getProperty("debug", "false").toLowerCase().equals("true")){
             buildExecutor.scheduleWithFixedDelay(builder, 0, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             buildExecutor.scheduleWithFixedDelay(builder, secondsUntilAgendaIsDue, frequencyInSeconds, TimeUnit.SECONDS);
         }
 
-        // Send the agenda.
+        // Schedule the agenda sending.
         EmailSenderRunnable sender = OamTools.buildAgendaEmailSender(null);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-        if (m_props.getProperty("debug", "false").equals("true")){
+        if (m_props.getProperty("debug", "false").toLowerCase().equals("true")){
             sendExecutor.scheduleWithFixedDelay(sender, 60, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             sendExecutor.scheduleWithFixedDelay(sender, secondsUntilAgendaIsDue + OamTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
@@ -124,7 +125,7 @@ public class OpenAgendaMail {
      */
     private static void executeOneShot() {
         BuildAgendaRunnable builder;
-        if (OamTools.PROPS.getProperty("debug", "false").equals("true")){
+        if (OamTools.PROPS.getProperty("debug", "false").toLowerCase().equals("true")){
             // Create agenda and delete emails.
             builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(false));
         } else {
@@ -141,19 +142,25 @@ public class OpenAgendaMail {
         sendExecutor.schedule(sender, 60L, TimeUnit.SECONDS);
     }
 
+    
     /** Starts the scheduling for meetings that are on the 1st and 3rd of a given day of the week within a month. */
-    private static void executeFirstAndThirdMode(){
-        long secondsUntilSendDay = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(m_props.getProperty("send.day", "tue")));
+    private static void executeFirstAndThirdMode() {
+        // Get time until the day that we need to send the agenda.
+        int dayofweek = OamTools.getDayOfWeek(OamTools.PROPS.getProperty("send.day", "tue"));
+        long secondsUntilSendDay = OamTools.getSecondsUntilSpecifiedDay(dayofweek);
 
-        FirstAndThirdRunnable firstAndThird = new FirstAndThirdRunnable(m_props);
+        // Schedule the day check.
+        FirstAndThirdRunnable firstAndThird = new FirstAndThirdRunnable();
         ScheduledExecutorService checkerExecutor = Executors.newSingleThreadScheduledExecutor();
-        if (m_props.getProperty("debug", "false").equals("true")){
-            checkerExecutor.scheduleWithFixedDelay(firstAndThird, 15, secondsUntilSendDay, TimeUnit.SECONDS);
+        if (OamTools.PROPS.getProperty("debug", "false").toLowerCase().equals("true")){
+            checkerExecutor.scheduleWithFixedDelay(firstAndThird, 5, secondsUntilSendDay, TimeUnit.SECONDS);
         } else {
+            // Schedules the first and third runnable to be run once a week starting on the next 'send day' at midnight.
             checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilSendDay, OamTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
         }
     }
 
+    
     /** Prints out the proper usage of the application to the command prompt. */
     private static void printUsage(){
         System.out.println("\nUsage:");

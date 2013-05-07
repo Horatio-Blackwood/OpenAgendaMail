@@ -1,6 +1,7 @@
 package openagendamail;
 
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import openagendamail.file.LogFile;
 import openagendamail.util.email.Email;
 import openagendamail.util.email.EmailAccount;
@@ -11,7 +12,8 @@ import openagendamail.util.email.EmailSender;
  * text and attachments to the email list.
  *
  * @author adam
- * @date February 17, 2012.
+ * @date February 17, 2013.
+ * Last Modified:  May 6th, 2013
  */
 public class EmailSenderRunnable implements Runnable {
 
@@ -21,16 +23,11 @@ public class EmailSenderRunnable implements Runnable {
     /** The email message to send. */
     private Email m_message;
 
-    /** A list of attachments (file paths) to add to the email when it is sent. */
-    private List<String> m_attachments;
-
     /**
      * Constructs a new EmailSenderRunnable.
      *
-     * @param subject the subject of the email to send.
-     * @param body the body of the email, if any.  This value may be null.
-     * @param attachments a list of Strings that are the paths to files that should be attached.  Null is a permitted
-     * value for this parameter.
+     * @param account the email account to send the email from.
+     * @param message the message to send.
      */
     public EmailSenderRunnable(EmailAccount account, Email message){
         if (account == null){
@@ -54,6 +51,14 @@ public class EmailSenderRunnable implements Runnable {
         boolean messageSent = false;
         do {
             attempts += 1;
+            if (attempts > 0 && attempts < 3) {
+                try {
+                    LogFile.getLogFile().log("Failed to send email on first attempt.  Will retry after five seconds.");
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    // Do nothing.
+                }
+            }
             messageSent = sender.sendEmail(m_message);
         } while ((messageSent == false) && (attempts < 3));
     }

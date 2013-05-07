@@ -22,7 +22,7 @@ import openagendamail.util.email.RecipientType;
  *
  * @author adam
  * @date Jan 2, 2013
- * Last Updated:  Feb 2, 2013
+ * Last Updated:  May 6, 2013
  */
 public class OamTools {
 
@@ -42,11 +42,13 @@ public class OamTools {
     static {
         try {
             FileInputStream app = new FileInputStream("./data/application.properties");
+            FileInputStream agenda = new FileInputStream("./data/agenda.properties");
             FileInputStream email = new FileInputStream("./data/email.properties");
-            FileInputStream schedule = new FileInputStream("./data/schedule.properties");
+            FileInputStream reminder = new FileInputStream("./data/reminder.properties");
             PROPS.load(app);
+            PROPS.load(agenda);
             PROPS.load(email);
-            PROPS.load(schedule);
+            PROPS.load(reminder);
 
         } catch (FileNotFoundException ex) {
             LogFile.getLogFile().log("Properties file not found.", ex);
@@ -60,7 +62,7 @@ public class OamTools {
     }
 
     /**
-     * Calculates and returns the number of seconds between now and the next Friday at 12am.
+     * Calculates and returns the number of seconds between now and the day specified at 12am.
      *
      * @param dayOfWeek the day of the week using the constants in Calendar (for example Calendar.FRIDAY).
      * @return seconds between now and Friday.
@@ -68,7 +70,6 @@ public class OamTools {
     public static long getSecondsUntilSpecifiedDay(int dayOfWeek){
         // Calculate time between now and the next specified day of the week. at 12am
         Date now = new Date();
-
         Calendar nowCal = new GregorianCalendar();
         nowCal.setTime(now);
 
@@ -84,14 +85,16 @@ public class OamTools {
         while (nowCal.get(Calendar.DAY_OF_WEEK) != dayOfWeek){
             nowCal.set(Calendar.DATE, nowCal.get(Calendar.DATE) + 1);
         }
+        
+        // Create a new calendar, and set only the Year, Month and Date.
+        // Doing so ensures the time is set to 12AM.
+        Calendar specifiedDayCal = new GregorianCalendar();
+        specifiedDayCal.clear();
+        specifiedDayCal.set(Calendar.YEAR, nowCal.get(Calendar.YEAR));
+        specifiedDayCal.set(Calendar.MONTH, nowCal.get(Calendar.MONTH));
+        specifiedDayCal.set(Calendar.DATE, nowCal.get(Calendar.DATE));
 
-        Calendar fridayCal = new GregorianCalendar();
-        fridayCal.clear();
-        fridayCal.set(Calendar.YEAR, nowCal.get(Calendar.YEAR));
-        fridayCal.set(Calendar.MONTH, nowCal.get(Calendar.MONTH));
-        fridayCal.set(Calendar.DATE, nowCal.get(Calendar.DATE));
-
-        return (fridayCal.getTimeInMillis() - new Date().getTime()) / 1000L;
+        return (specifiedDayCal.getTimeInMillis() - System.currentTimeMillis()) / 1000L;
     }
 
 
