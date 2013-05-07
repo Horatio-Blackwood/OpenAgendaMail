@@ -55,6 +55,7 @@ public class EmailSender {
     /**
      * Sends the provided {@link Email}.
      * @param email the Email to send.
+     * @return true if the email sends successfully, or false if an issue of some sort is identified.
      */
     public boolean sendEmail(Email email){
         try {
@@ -91,7 +92,6 @@ public class EmailSender {
 
             } else {
                 LogFile.getLogFile().log("Message store was not an IMAP Message store.  No messages retrieved.");
-
                 return false;
             }
         } catch (NoSuchProviderException ex) {
