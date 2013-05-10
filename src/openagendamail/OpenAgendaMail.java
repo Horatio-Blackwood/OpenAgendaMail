@@ -128,10 +128,10 @@ public class OpenAgendaMail {
     private static void executeOneShot() {
         BuildAgendaRunnable builder;
         if (OamTools.PROPS.getProperty("debug", "false").toLowerCase().equals("true")){
-            // Create agenda and delete emails.
+            // Create agenda, but don't delete emails.
             builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(false));
         } else {
-            // Create agenda, but don't delete emails.
+            // Create agenda and delete emails.
             builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(true));
         }
         ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
