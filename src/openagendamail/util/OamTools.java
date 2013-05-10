@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
-import openagendamail.EmailSenderRunnable;
 import openagendamail.file.LogFile;
 import openagendamail.file.TextFileToolbox;
 import openagendamail.util.email.Email;
@@ -202,6 +201,7 @@ public class OamTools {
             toSend.addRecipient(email, RecipientType.BCC);
         }
 
+        LogFile.getLogFile().log("Created email sender for:  " + toSend.getSubject());
         return new EmailSenderRunnable(account, toSend);
     }
 
@@ -221,6 +221,7 @@ public class OamTools {
             toSend.addRecipient(email, RecipientType.BCC);
         }
 
+        LogFile.getLogFile().log("Created email sender for:  " + toSend.getSubject());
         return new EmailSenderRunnable(account, toSend);
     }
 

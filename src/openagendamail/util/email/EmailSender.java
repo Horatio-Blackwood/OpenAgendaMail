@@ -43,13 +43,13 @@ public class EmailSender {
 
         // Add special properties for using SMTP / sending mail.
         m_properties = new Properties();
-        m_properties.put("mail.store.protocol", "imaps");
-        m_properties.put("mail.smtp.starttls.enable", "true");
-        m_properties.put("mail.smtp.auth", "true");
-        m_properties.put("mail.smtp.host", "smtp.gmail.com");
-        m_properties.put("mail.transport.protocol", "smtp");
-        m_properties.put("mail.smtp.user", m_account.getAddress());
-        m_properties.put("mail.smtp.password", m_account.getPassword());
+        m_properties.setProperty("mail.store.protocol", "imaps");
+        m_properties.setProperty("mail.smtp.starttls.enable", "true");
+        m_properties.setProperty("mail.smtp.auth", "true");
+        m_properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        m_properties.setProperty("mail.transport.protocol", "smtp");
+        m_properties.setProperty("mail.smtp.user", m_account.getAddress());
+        m_properties.setProperty("mail.smtp.password", m_account.getPassword());
     }
 
     /**
@@ -61,7 +61,7 @@ public class EmailSender {
         try {
             // --- Connect to the email account.
             LogFile.getLogFile().log("Connecting to email account...");
-            Session session = Session.getDefaultInstance(m_properties);
+            Session session = Session.getInstance(m_properties);
             Store store = session.getStore("imaps");
             store.connect("imap.gmail.com", m_account.getAddress(), m_account.getPassword());
             LogFile.getLogFile().log("Connected successfully.");

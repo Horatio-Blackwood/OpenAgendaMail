@@ -1,5 +1,7 @@
-package openagendamail;
+package openagendamail.util;
 
+import openagendamail.util.EmailSenderRunnable;
+import openagendamail.util.BuildAgendaRunnable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

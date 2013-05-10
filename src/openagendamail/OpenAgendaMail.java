@@ -6,6 +6,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import openagendamail.data.EmailAgendaItemProvider;
 import openagendamail.file.LogFile;
+import openagendamail.util.BuildAgendaRunnable;
+import openagendamail.util.EmailSenderRunnable;
+import openagendamail.util.FirstAndThirdRunnable;
 import openagendamail.util.OamTools;
 
 /**
@@ -13,15 +16,12 @@ import openagendamail.util.OamTools;
  *
  * @author adam
  * @date Jan 1, 2013
- * Last Updated: May 5th, 2013
+ * Last Updated: May 7th, 2013
  */
 public class OpenAgendaMail {
 
-    /** The properties for this program. */
-    private static Properties m_props = OamTools.PROPS;
-
     /** A version string. */
-    static final String VERSION = "v1.8";
+    public static final String VERSION = "v1.8";
 
     /** The date of the last update to the system. */
     private static final String LAST_UPDATED = "May 6th, 2013";
@@ -35,7 +35,7 @@ public class OpenAgendaMail {
 
         // print out software version info
         StringBuilder bldr = new StringBuilder(System.lineSeparator());
-        bldr.append("OpenAgendaMail:  A program by Adam Anderson");
+        bldr.append("OpenAgendaMail - A program by Adam Anderson");
         bldr.append(System.lineSeparator());
         bldr.append("Version:  " + VERSION);
         bldr.append(System.lineSeparator());
@@ -83,13 +83,14 @@ public class OpenAgendaMail {
 
     /** Starts the application in week-based mode. */
     private static void executeWeekBasedMode(){
-        long frequencyInSeconds = Integer.valueOf(m_props.getProperty("weeks.between.meetings", "1")) * OamTools.ONE_WEEK_IN_SECONDS;
-        long secondsUntilAgendaIsDue = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(m_props.getProperty("send.day", "tue")));
+        Properties props = OamTools.PROPS;
+        long frequencyInSeconds = Integer.valueOf(props.getProperty("weeks.between.meetings", "1")) * OamTools.ONE_WEEK_IN_SECONDS;
+        long secondsUntilAgendaIsDue = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(props.getProperty("send.day", "tue")));
 
         // Schedule the agenda building.
         BuildAgendaRunnable builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(true));
         ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
-        if (m_props.getProperty("debug", "false").toLowerCase().equals("true")){
+        if (props.getProperty("debug", "false").toLowerCase().equals("true")){
             buildExecutor.scheduleWithFixedDelay(builder, 0, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             buildExecutor.scheduleWithFixedDelay(builder, secondsUntilAgendaIsDue, frequencyInSeconds, TimeUnit.SECONDS);
@@ -98,19 +99,19 @@ public class OpenAgendaMail {
         // Schedule the agenda sending.
         EmailSenderRunnable sender = OamTools.buildAgendaEmailSender(null);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-        if (m_props.getProperty("debug", "false").toLowerCase().equals("true")){
+        if (props.getProperty("debug", "false").toLowerCase().equals("true")){
             sendExecutor.scheduleWithFixedDelay(sender, 60, frequencyInSeconds, TimeUnit.SECONDS);
         } else {
             sendExecutor.scheduleWithFixedDelay(sender, secondsUntilAgendaIsDue + OamTools.SECONDS_IN_FOUR_HOURS, frequencyInSeconds, TimeUnit.SECONDS);
         }
 
         // if enabled, schedule the reminder email
-        if ((m_props.getProperty("reminders.on", "false")).toLowerCase().equals("true")){
-            long secondsUntilReminder = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(m_props.getProperty("reminder.day", "mon")));
+        if ((props.getProperty("reminders.on", "false")).toLowerCase().equals("true")){
+            long secondsUntilReminder = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(props.getProperty("reminder.day", "mon")));
             EmailSenderRunnable reminder = OamTools.buildReminderSender();
             ScheduledExecutorService reminderExecutor = Executors.newSingleThreadScheduledExecutor();
 
-            if (m_props.getProperty("debug", "false").equals("true")){
+            if (props.getProperty("debug", "false").equals("true")){
                 System.out.println("Debug scheduling reminder...");
                 reminderExecutor.scheduleWithFixedDelay(reminder, 30, frequencyInSeconds, TimeUnit.SECONDS);
             } else {
@@ -133,13 +134,13 @@ public class OpenAgendaMail {
             builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(true));
         }
         ScheduledExecutorService buildExecutor = Executors.newSingleThreadScheduledExecutor();
-        buildExecutor.schedule(builder, 0L, TimeUnit.MILLISECONDS);
+        buildExecutor.schedule(builder, 0, TimeUnit.MILLISECONDS);
 
         // Send the agenda after a 60 second delay.  This should take advantage of J7's new File System listening
         // Capabilities.
         EmailSenderRunnable sender = OamTools.buildAgendaEmailSender(null);
         ScheduledExecutorService sendExecutor = Executors.newSingleThreadScheduledExecutor();
-        sendExecutor.schedule(sender, 60L, TimeUnit.SECONDS);
+        sendExecutor.schedule(sender, 90, TimeUnit.SECONDS);
     }
 
     

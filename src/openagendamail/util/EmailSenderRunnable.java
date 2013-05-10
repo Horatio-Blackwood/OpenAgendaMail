@@ -1,7 +1,5 @@
-package openagendamail;
+package openagendamail.util;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import openagendamail.file.LogFile;
 import openagendamail.util.email.Email;
 import openagendamail.util.email.EmailAccount;
@@ -53,8 +51,8 @@ public class EmailSenderRunnable implements Runnable {
             attempts += 1;
             if (attempts > 0 && attempts < 3) {
                 try {
-                    LogFile.getLogFile().log("Failed to send email on first attempt.  Will retry after five seconds.");
-                    Thread.sleep(5000);
+                    LogFile.getLogFile().log("Failed to send email on attempt # " + attempts  + " of 3.  Will retry in one minute.");
+                    Thread.sleep(60 * 1000);
                 } catch (InterruptedException ex) {
                     // Do nothing.
                 }

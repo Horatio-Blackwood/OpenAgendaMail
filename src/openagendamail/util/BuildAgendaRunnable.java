@@ -1,12 +1,12 @@
-package openagendamail;
+package openagendamail.util;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import openagendamail.OpenAgendaMail;
 import openagendamail.data.AgendaItem;
 import openagendamail.data.AgendaItemProvider;
 import openagendamail.file.LogFile;
-import openagendamail.util.OamTools;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import plainpdf.Pdf;
 import plainpdf.PdfFont;
@@ -27,7 +27,6 @@ public class BuildAgendaRunnable implements Runnable {
     /**
      * Constructor.  Creates a new CheckMailRunnable.
      * @param provider an {@link AgendaItem} provider to use to fetch emails to build the agenda with.
-     * @param deleteEmails true if the emails should be deleted after building the agenda, false otherwise.
      */
     public BuildAgendaRunnable(AgendaItemProvider provider) {
         if (provider == null){

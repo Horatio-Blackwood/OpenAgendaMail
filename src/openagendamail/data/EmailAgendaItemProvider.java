@@ -59,7 +59,7 @@ public class EmailAgendaItemProvider implements AgendaItemProvider {
         try {
             // Fetch the mail from the account.
             LogFile.getLogFile().log("Connecting to email account...");
-            Session session = Session.getDefaultInstance(OamTools.PROPS, null);
+            Session session = Session.getInstance(OamTools.PROPS);
             store = session.getStore("imaps");
             store.connect("imap.gmail.com", OamTools.PROPS.getProperty("email"), OamTools.PROPS.getProperty("password"));
             LogFile.getLogFile().log("Successfully connected.");
