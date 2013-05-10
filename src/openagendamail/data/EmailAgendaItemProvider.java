@@ -89,9 +89,9 @@ public class EmailAgendaItemProvider implements AgendaItemProvider {
         if (OamTools.PROPS.getProperty("debug", "false").equals("true")){
             LogFile.getLogFile().log("In debug mode:  Skipping email delete step.");
         } else {
-            LogFile.getLogFile().log("Deleting old emails...");
-            deleteEmails(store);
-            LogFile.getLogFile().log("Done deleting old emails.");
+            if (m_deleteEmails){
+                deleteEmails(store);
+            }
         }
 
         return items;
@@ -183,12 +183,12 @@ public class EmailAgendaItemProvider implements AgendaItemProvider {
      */
     private static void deleteEmails(Store store){
         try {
-            if (m_deleteEmails){
+                LogFile.getLogFile().log("Deleting old emails...");
                 for (Message msg : m_messages){
                     msg.setFlag(Flags.Flag.DELETED, true);
                 }
-            }
-        } catch (MessagingException ex) {
+                LogFile.getLogFile().log("Done deleting old emails.");
+         } catch (MessagingException ex) {
             LogFile.getLogFile().log("Error deleting mesesages", ex);
         }
 
