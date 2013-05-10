@@ -16,7 +16,7 @@ import openagendamail.util.OamTools;
  *
  * @author adam
  * @date Jan 1, 2013
- * Last Updated: May 7th, 2013
+ * Last Updated: May 9th, 2013
  */
 public class OpenAgendaMail {
 
@@ -24,7 +24,7 @@ public class OpenAgendaMail {
     public static final String VERSION = "v1.8";
 
     /** The date of the last update to the system. */
-    private static final String LAST_UPDATED = "May 6th, 2013";
+    private static final String LAST_UPDATED = "May 9th, 2013";
 
 
     /**
@@ -86,6 +86,7 @@ public class OpenAgendaMail {
         Properties props = OamTools.PROPS;
         long frequencyInSeconds = Integer.valueOf(props.getProperty("weeks.between.meetings", "1")) * OamTools.ONE_WEEK_IN_SECONDS;
         long secondsUntilAgendaIsDue = OamTools.getSecondsUntilSpecifiedDay(OamTools.getDayOfWeek(props.getProperty("send.day", "tue")));
+        LogFile.getLogFile().log("Time until send:  " + OamTools.getCountdownString(secondsUntilAgendaIsDue));
 
         // Schedule the agenda building.
         BuildAgendaRunnable builder = new BuildAgendaRunnable(new EmailAgendaItemProvider(true));
@@ -148,16 +149,17 @@ public class OpenAgendaMail {
     private static void executeFirstAndThirdMode() {
         // Get time until the day that we need to send the agenda.
         int dayofweek = OamTools.getDayOfWeek(OamTools.PROPS.getProperty("send.day", "tue"));
-        long secondsUntilSendDay = OamTools.getSecondsUntilSpecifiedDay(dayofweek);
+        long secondsUntilAgendaIsDue = OamTools.getSecondsUntilSpecifiedDay(dayofweek);
+        LogFile.getLogFile().log("Time until send:  " + OamTools.getCountdownString(secondsUntilAgendaIsDue));
 
         // Schedule the day check.
         FirstAndThirdRunnable firstAndThird = new FirstAndThirdRunnable();
         ScheduledExecutorService checkerExecutor = Executors.newSingleThreadScheduledExecutor();
         if (OamTools.PROPS.getProperty("debug", "false").toLowerCase().equals("true")){
-            checkerExecutor.scheduleWithFixedDelay(firstAndThird, 5, secondsUntilSendDay, TimeUnit.SECONDS);
+            checkerExecutor.scheduleWithFixedDelay(firstAndThird, 5, secondsUntilAgendaIsDue, TimeUnit.SECONDS);
         } else {
             // Schedules the first and third runnable to be run once a week starting on the next 'send day' at midnight.
-            checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilSendDay, OamTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
+            checkerExecutor.scheduleWithFixedDelay(firstAndThird, secondsUntilAgendaIsDue, OamTools.ONE_WEEK_IN_SECONDS, TimeUnit.SECONDS);
         }
     }
 

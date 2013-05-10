@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import openagendamail.data.AgendaItem;
 import openagendamail.data.AgendaItemProvider;
+import openagendamail.util.BuildAgendaRunnable;
 import openagendamail.util.OamTools;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -91,4 +92,5 @@ public class BuildAgendaRunnableTest {
         builder2.run();
         assertTrue(Files.exists(Paths.get("agenda2.pdf")));
     }
+
 }

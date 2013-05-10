@@ -27,10 +27,16 @@ public class OamTools {
 
     /** The properties for this application. */
     public static final Properties PROPS = new Properties();
+    
+    /** The number of seconds in an hour. */
+    public static final long SECONDS_IN_ONE_HOUR = 60 * 60;
 
     /** The number of seconds in four hours. */
     public static final long SECONDS_IN_FOUR_HOURS = 60 * 60 * 4;
 
+    /** The number of seconds in a day. */
+    public static final long SECONDS_IN_ONE_DAY = 60 * 60 * 24;
+    
     /** A day as measured in seconds - pre-calculated for easy use.*/
     public static final long ONE_WEEK_IN_SECONDS = 60L * 60 * 24 * 7;
 
@@ -236,5 +242,58 @@ public class OamTools {
             return "";
         }
         return m_dateFormat.format(date);
+    }
+    
+    public static String getCountdownString(long seconds){
+        long days  = 0;
+        long hours = 0;
+        long mins  = 0;
+        
+        if (seconds >= SECONDS_IN_ONE_DAY){
+            days = seconds / SECONDS_IN_ONE_DAY;
+            seconds = seconds - (days * SECONDS_IN_ONE_DAY);
+        }
+        if (seconds >= SECONDS_IN_ONE_HOUR){
+            hours = seconds / SECONDS_IN_ONE_HOUR;
+            seconds = seconds - (hours * SECONDS_IN_ONE_HOUR);
+        }
+        if (seconds >= 60){
+            mins = seconds / 60;
+            seconds = seconds - (mins * 60);
+        }
+        
+        StringBuilder bldr = new StringBuilder();
+        
+        bldr.append(days);
+        bldr.append(" day");
+        if (days != 1){
+            bldr.append("s");
+        }
+        bldr.append(", ");
+        
+        
+        bldr.append(hours);
+        bldr.append(" hour");
+        if (hours != 1){
+            bldr.append("s");
+        }
+        bldr.append(", ");
+        
+        
+        bldr.append(mins);
+        bldr.append(" minute");
+        if (mins != 1){
+            bldr.append("s");
+        }
+        bldr.append(", and ");
+        
+        bldr.append(seconds);
+        bldr.append(" second");
+        if (seconds != 1){
+            bldr.append("s");
+        }
+        bldr.append(".");
+        
+        return bldr.toString();
     }
 }
