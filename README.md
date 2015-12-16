@@ -1,8 +1,3 @@
-Version 2.0 Forthcoming
-=====================
-
-Version 2.0 is coming!  Currently it is under heavy development and will feature a user interface for creating and scheduling agenda configurations, making OAM much easier to configure and use!
-
 OpenAgendaMail 1.8
 ==================
 
